@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -218,7 +219,7 @@
         
         <div class="detail-row">
           <span class="detail-label">Merchant</span>
-          <span class="detail-value">HSBC</span>
+          <span class="detail-value">Company ABC</span>
         </div>
         
         <div class="detail-row">
@@ -228,7 +229,7 @@
         
         <div class="detail-row">
           <span class="detail-label">Amount</span>
-          <span class="detail-value">1.00 SGD</span>
+          <span class="detail-value">308.00 HKD</span>
         </div>
       </div>
       
@@ -254,9 +255,11 @@
     const swipeTrack = document.getElementById('swipe-track');
     const swipeContainer = document.getElementById('swipe-container');
     
+    // Initial position
     let startX = 0;
     let currentX = 0;
     
+    // Touch events for swipe
     swipeContainer.addEventListener('touchstart', function(e) {
       startX = e.touches[0].clientX;
       swipeButton.style.transition = 'none';
@@ -271,6 +274,7 @@
         const buttonTransform = Math.min(0, -100 + (diffX / containerWidth) * 100);
         swipeButton.style.transform = `translateX(${buttonTransform}%)`;
         
+        // If the button is fully visible, redirect to success page
         if (buttonTransform >= -5) {
           setTimeout(() => {
             window.location.href = 'success.html';
@@ -284,6 +288,7 @@
       swipeButton.style.transform = 'translateX(-100%)';
     });
     
+    // For demo purposes on desktop
     let isDragging = false;
     
     swipeContainer.addEventListener('mousedown', function(e) {
@@ -303,6 +308,7 @@
         const buttonTransform = Math.min(0, -100 + (diffX / containerWidth) * 100);
         swipeButton.style.transform = `translateX(${buttonTransform}%)`;
         
+        // If the button is fully visible, redirect to success page
         if (buttonTransform >= -5) {
           setTimeout(() => {
             window.location.href = 'success.html';
