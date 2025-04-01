@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transfer Success</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f5f5;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    
+    .warning-bar {
+      background-color: #ffeb3b;
+      color: #333;
+      padding: 8px 15px;
+      font-size: 12px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .warning-bar i {
+      margin-right: 5px;
+      color: #f44336;
+    }
+    
+    .broken-lock {
+      margin-right: 5px;
+      font-weight: bold;
+    }
+    
+    .url-bar {
+      background-color: #f1f1f1;
+      border-bottom: 1px solid #ddd;
+      padding: 8px 15px;
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+    }
+    
+    .url-text {
+      flex-grow: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #777;
+    }
+    
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: white;
+      min-height: 100vh;
+      position: relative;
+      box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      text-align: center;
+    }
+    
+    .success-icon {
+      width: 80px;
+      height: 80px;
+      background-color: #00A566;
+      border-radius: 50%;
+      margin: 0 auto 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .success-icon svg {
+      width: 40px;
+      height: 40px;
+      fill: white;
+    }
+    
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    
+    p {
+      font-size: 16px;
+      color: #666;
+      margin-bottom: 40px;
+    }
+    
+    .done-button {
+      width: 100%;
+      height: 50px;
+      background-color: #db0011;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 40px;
+    }
+    
+    .hsbc-logo {
+      height: 40px;
+      margin-top: 40px;
+    }
+    
+    .typo {
+      font-family: Arial, sans-serif;
+    }
+    
+    .data-collection-notice {
+      font-size: 10px;
+      color: #999;
+      margin-top: 20px;
+      text-align: center;
+      opacity: 0.8;
+    }
+    
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0,0,0,0.7);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      display: none;
+    }
+    
+    .popup {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 300px;
+      text-align: center;
+    }
+    
+    .popup h3 {
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+    
+    .popup p {
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    
+    .popup button {
+      padding: 8px 16px;
+      background-color: #db0011;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    @media (max-width: 480px) {
+      .warning-bar {
+        font-size: 10px;
+        padding: 5px 10px;
+      }
+      
+      .url-bar {
+        font-size: 10px;
+        padding: 5px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="warning-bar">
+    <span class="broken-lock">🔓</span> Not secure | Connection is not private
+  </div>
+  
+  <div class="url-bar">
+    <span class="url-text">hsbck-onllne.com/payment/success.php?id=347892&ref=XXXXXXX</span>
+  </div>
+  
+  <div class="container">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"></path>
+      </svg>
+    </div>
+    
+    <h2 class="typo">Transferring mоney success</h2>
+    <p>Your payment of 3.00 HKD to Company ABC has been successfully processed.</p>
+    
+    <button class="done-button" onclick="showVerification()">Done</button>
+    
+    <img src="https://companieslogo.com/img/orig/HSBC-9c9da987.png?t=1720244492" alt="HSBC" class="hsbc-logo">
+    
+    <div class="data-collection-notice">
+      By using this service, you agree to our terms of service. Your data may be used for analytics and marketing purposes.
+    </div>
+  </div>
+  
+  <div class="overlay" id="verification-overlay">
+    <div class="popup">
+      <h3>Verification Required</h3>
+      <p>To complete your transaction, please verify your account. Click below to continue.</p>
+      <button onclick="window.location.href='index.html'">Verify Account</button>
+    </div>
+  </div>
+  
+  <script>
+    function showVerification() {
+      document.getElementById('verification-overlay').style.display = 'flex';
+    }
+    
+    window.addEventListener('beforeunload', function(e) {
+      if (Math.random() > 0.5) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    });
+  </script>
+</body>
+</html>
