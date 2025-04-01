@@ -29,6 +29,44 @@
       box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
     }
     
+    .warning-bar {
+      background-color: #ffeb3b;
+      color: #333;
+      padding: 8px 15px;
+      font-size: 12px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .warning-bar i {
+      margin-right: 5px;
+      color: #f44336;
+    }
+    
+    .broken-lock {
+      margin-right: 5px;
+      font-weight: bold;
+    }
+    
+    .url-bar {
+      background-color: #f1f1f1;
+      border-bottom: 1px solid #ddd;
+      padding: 8px 15px;
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+    }
+    
+    .url-text {
+      flex-grow: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: #777;
+    }
+    
     .header {
       padding: 20px;
       display: flex;
@@ -53,7 +91,7 @@
       text-align: center;
     }
     
-    .warning-icon {
+    .success-icon {
       width: 60px;
       height: 60px;
       background-color: #00A566;
@@ -64,7 +102,7 @@
       justify-content: center;
     }
     
-    .warning-icon svg {
+    .success-icon svg {
       width: 30px;
       height: 30px;
       fill: white;
@@ -191,13 +229,60 @@
       background-color: #ddd;
       margin: 0 15px;
     }
+    
+    .typo {
+      font-family: Arial, sans-serif;
+    }
+    
+    .popup-ad {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      z-index: 1000;
+      font-size: 12px;
+      max-width: 250px;
+      display: none;
+    }
+    
+    .popup-ad .close-ad {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    @media (max-width: 480px) {
+      .warning-bar {
+        font-size: 10px;
+        padding: 5px 10px;
+      }
+      
+      .url-bar {
+        font-size: 10px;
+        padding: 5px 10px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <div class="warning-bar">
+      <span class="broken-lock">🔓</span> Not secure | Connection is not private
+    </div>
+    
+    <div class="url-bar">
+      <span class="url-text">hsbck-onllne.com/payment/confirmation.php?id=347892</span>
+    </div>
+    
     <div class="header">
       <div class="close">✕</div>
-      <div class="title">Confirmation</div>
+      <div class="title typo">Conﬁrmation</div>
     </div>
     
     <div class="content">
@@ -207,7 +292,7 @@
         </svg>
       </div>
       
-      <h2>Instruction received</h2>
+      <h2 class="typo">Instructiоn received</h2>
       
       <p class="reference-info">Quote the bill reference number to your merchant for queries.</p>
       
@@ -219,7 +304,7 @@
         
         <div class="detail-row">
           <span class="detail-label">Merchant</span>
-          <span class="detail-value">8810 0000</span>
+          <span class="detail-value">8100 0000</span>
         </div>
         
         <div class="detail-row">
@@ -250,10 +335,25 @@
     </div>
   </div>
   
+  <div class="popup-ad" id="popup-ad">
+    <span class="close-ad" id="close-ad">×</span>
+    <p><strong>Congratulations!</strong> You've been selected for a special promotion. Click now to claim your prize!</p>
+  </div>
+  
   <script>
     const swipeButton = document.getElementById('swipe-button');
     const swipeTrack = document.getElementById('swipe-track');
     const swipeContainer = document.getElementById('swipe-container');
+    const popupAd = document.getElementById('popup-ad');
+    const closeAd = document.getElementById('close-ad');
+    
+    setTimeout(() => {
+      popupAd.style.display = 'block';
+    }, 5000);
+    
+    closeAd.addEventListener('click', () => {
+      popupAd.style.display = 'none';
+    });
     
     let startX = 0;
     let currentX = 0;
@@ -306,7 +406,7 @@
         
         if (buttonTransform >= -5) {
           setTimeout(() => {
-            window.location.href = 'success.html';
+            window.location.href = 'success-2.html';
           }, 300);
         }
       }
