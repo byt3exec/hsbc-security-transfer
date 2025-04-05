@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phishing Awareness Game</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      background-color: #f3f4f6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .container {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      max-width: 450px;
+      width: 100%;
+      margin-top: 2rem;
+    }
+    .header {
+      padding: 16px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .close-btn {
+      cursor: pointer;
+      font-size: 20px;
+    }
+    .title {
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .spacer {
+      width: 16px;
+    }
+    .content {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .checkmark {
+      background-color: #10b981;
+      color: white;
+      border-radius: 50%;
+      padding: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .instructions {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+    .description {
+      color: #6b7280;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .info-panel {
+      background-color: #f9fafb;
+      width: 100%;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #e5e7eb;
+      position: relative;
+    }
+    .info-row:last-child {
+      border-bottom: none;
+    }
+    .clickable {
+      cursor: pointer;
+    }
+    .label {
+      color: #6b7280;
+    }
+    .value {
+      font-weight: 500;
+    }
+    .highlighted {
+      background-color: #fef9c3;
+    }
+    .circle-border {
+      position: absolute;
+      inset: 0;
+      border: 2px solid #ef4444;
+      border-radius: 6px;
+      pointer-events: none;
+    }
+    .payment-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      justify-content: center;
+      width: 100%;
+      margin-bottom: 24px;
+    }
+    .fps-logo {
+      background-color: #3b82f6;
+      color: white;
+      border-radius: 50%;
+      padding: 8px;
+      font-weight: bold;
+      font-size: 12px;
+    }
+    .hsbc-logo {
+      height: 24px;
+      width: auto;
+    }
+    .merchant-name {
+      color: #374151;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .slider-container {
+      position: relative;
+      width: 100%;
+      height: 50px;
+      background-color: #f3f4f6;
+      border-radius: 9999px;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .slider-thumb {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 50px;
+      height: 50px;
+      background-color: #3b82f6;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      touch-action: none;
+    }
+    .slider-track {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      background-color: rgba(59, 130, 246, 0.2);
+      z-index: 0;
+      border-radius: 9999px;
+    }
+    .slider-text {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6b7280;
+      font-weight: 500;
+      z-index: 1;
+    }
+    .success-container {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: white;
+      z-index: 100;
+      padding: 20px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .success-checkmark {
+      background-color: #10b981;
+      color: white;
+      border-radius: 50%;
+      padding: 24px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .success-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .success-message {
+      color: #6b7280;
+      text-align: center;
+      margin-bottom: 32px;
+      max-width: 450px;
+    }
+    .success-details {
+      background-color: #f9fafb;
+      width: 100%;
+      max-width: 450px;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 32px;
+    }
+    .message-container {
+      background-color: white;
+      padding: 16px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-top: 24px;
+      max-width: 450px;
+      width: 100%;
+    }
+    .message {
+      text-align: center;
+      color: #d97706;
+      font-weight: 500;
+    }
+    .message.success {
+      color: #059669;
+    }
+    .progress {
+      color: #6b7280;
+      font-size: 14px;
+      margin-top: 8px;
+      text-align: center;
+    }
+    .tips {
+      margin-top: 16px;
+      padding: 16px;
+      background-color: #f0fdf4;
+      border-radius: 8px;
+      border: 1px solid #dcfce7;
+    }
+    .tips-title {
+      font-weight: bold;
+      color: #166534;
+      margin-bottom: 8px;
+    }
+    .tips-list {
+      font-size: 14px;
+      color: #374151;
+    }
+    .tip-item {
+      margin-top: 8px;
+    }
+    .button {
+      background-color: #3b82f6;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 500;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="close-btn">✕</div>
+      <h2 class="title">Confirmation</h2>
+      <div class="spacer"></div>
+    </div>
+    
+    <div class="content">
+      <div class="checkmark">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+      </div>
+      
+      <h3 class="instructions">Instruction received</h3>
+      
+      <p class="description">
+        Quote the bill reference number to your merchant for queries.
+      </p>
+      
+      <div class="info-panel">
+        <div class="info-row">
+          <span class="label">Bill reference number</span>
+          <span class="value">XXXXXXX</span>
+        </div>
+        
+        <div id="merchant-row" class="info-row clickable">
+          <span class="label">Merchant</span>
+          <span class="value">HSBC</span>
+        </div>
+        
+        <div id="fps-row" class="info-row clickable">
+          <span class="label">FPS Identifier</span>
+          <span class="value">0000000</span>
+        </div>
+        
+        <div id="amount-row" class="info-row clickable">
+          <span class="label">Amount</span>
+          <span class="value">1.00 SGD</span>
+        </div>
+      </div>
+      
+      <div class="payment-info">
+        <div class="fps-logo">FPS</div>
+        <div class="merchant-name">
+          <img src="https://img.icons8.com/color/512/hsbc.png" class="hsbc-logo" alt="HSBC logo">
+        </div>
+      </div>
+      
+      <div id="slider-container" class="slider-container">
+        <div id="slider-track" class="slider-track" style="width: 0%;"></div>
+        <div id="slider-text" class="slider-text">Slide to confirm payment →</div>
+        <div id="slider-thumb" class="slider-thumb">→</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="message-container">
+    <p id="message" class="message">
+      Find all suspicious elements before confirming!
+    </p>
+    <p id="progress" class="progress">
+      Found: 0 / 3 suspicious elements
+    </p>
+    <div id="tips-container" style="display: none;" class="tips">
+      <h3 class="tips-title">Phishing Warning Signs:</h3>
+      <ul class="tips-list">
+        <li class="tip-item"> Fake merchant name: Always verify the payment service is legitimate</li>
+        <li class="tip-item"> Suspicious identifier: Look for unusual account numbers or IDs</li>
+        <li class="tip-item"> Small test amount: Scammers often test with small charges before larger fraud</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="success-page" class="success-container">
+    <div class="success-checkmark">
+      <svg width="36" height="36" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+      </svg>
+    </div>
+    <h2 class="success-title">Payment Successful</h2>
+    <p class="success-message">Your payment of 1.00 SGD to HSBC has been completed successfully.</p>
+    <div class="success-details">
+      <div class="info-row">
+        <span class="label">Transaction ID</span>
+        <span class="value">TRX12345678</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Date & Time</span>
+        <span class="value" id="transaction-date"></span>
+      </div>
+      <div class="info-row">
+        <span class="label">Payment Method</span>
+        <span class="value">FAST Payment</span>
+      </div>
+    </div>
+    <button class="button" id="back-button">Back to Home</button>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const foundItems = {
+        merchant: false,
+        fps: false,
+        amount: false
+      };
+      
+      let gameComplete = false;
+      
+      const merchantRow = document.getElementById('merchant-row');
+      const fpsRow = document.getElementById('fps-row');
+      const amountRow = document.getElementById('amount-row');
+      const message = document.getElementById('message');
+      const progress = document.getElementById('progress');
+      const tipsContainer = document.getElementById('tips-container');
+      const sliderContainer = document.getElementById('slider-container');
+      const sliderThumb = document.getElementById('slider-thumb');
+      const sliderTrack = document.getElementById('slider-track');
+      const sliderText = document.getElementById('slider-text');
+      const successPage = document.getElementById('success-page');
+      const backButton = document.getElementById('back-button');
+      const transactionDate = document.getElementById('transaction-date');
+      
+      const now = new Date();
+      transactionDate.textContent = now.toLocaleString();
+      
+      function updateProgress() {
+        const foundCount = Object.values(foundItems).filter(Boolean).length;
+        progress.textContent = `Found: ${foundCount} / 3 suspicious elements`;
+        
+        if (foundCount === 3 && !gameComplete) {
+          gameComplete = true;
+          message.textContent = "Congratulations! You found all suspicious elements. You're protected from this scam!";
+          message.classList.add('success');
+          sliderText.textContent = "Slide to continue →";
+          tipsContainer.style.display = 'block';
+        }
+      }
+      
+      function handleItemClick(item, element, description) {
+        if (!foundItems[item]) {
+          foundItems[item] = true;
+          element.classList.add('highlighted');
+          
+          const border = document.createElement('div');
+          border.classList.add('circle-border');
+          element.appendChild(border);
+          
+          message.textContent = `Good job! You found a suspicious element: ${description}`;
+          updateProgress();
+        }
+      }
+      
+      merchantRow.addEventListener('click', function() {
+        handleItemClick('merchant', merchantRow, 'The merchant claims to be HSBC but this might not be an official HSBC payment page');
+      });
+      
+      fpsRow.addEventListener('click', function() {
+        handleItemClick('fps', fpsRow, 'The FPS Identifier 0000000 looks suspicious and doesn\'t follow standard format');
+      });
+      
+      amountRow.addEventListener('click', function() {
+        handleItemClick('amount', amountRow, 'The small amount (1.00 SGD) is suspicious, scammers often start with small charges');
+      });
+      
+      let isDragging = false;
+      let startX = 0;
+      const maxRight = sliderContainer.clientWidth - sliderThumb.clientWidth;
+      
+      function updateSliderPosition(clientX) {
+        const containerRect = sliderContainer.getBoundingClientRect();
+        let newPosition = clientX - containerRect.left - (sliderThumb.clientWidth / 2);
+        
+        newPosition = Math.max(0, Math.min(newPosition, maxRight));
+        
+        sliderThumb.style.left = `${newPosition}px`;
+        
+        const percentage = (newPosition / maxRight) * 100;
+        sliderTrack.style.width = `${percentage}%`;
+        
+        if (percentage > 90) {
+          if (gameComplete) {
+            successPage.style.display = 'flex';
+          } else {
+            sliderThumb.style.left = '0px';
+            sliderTrack.style.width = '0%';
+            message.textContent = "You need to find all suspicious elements first!";
+          }
+        }
+      }
+      
+      sliderThumb.addEventListener('mousedown', function(e) {
+        isDragging = true;
+        startX = e.clientX - sliderThumb.getBoundingClientRect().left;
+        sliderThumb.style.transition = 'none';
+        sliderTrack.style.transition = 'none';
+      });
+      
+      document.addEventListener('mousemove', function(e) {
+        if (!isDragging) return;
+        updateSliderPosition(e.clientX - startX);
+      });
+      
+      document.addEventListener('mouseup', function() {
+        if (isDragging) {
+          isDragging = false;
+          
+          const currentLeft = parseFloat(sliderThumb.style.left || '0');
+          if (currentLeft < maxRight * 0.9) {
+            sliderThumb.style.transition = 'left 0.3s ease-out';
+            sliderTrack.style.transition = 'width 0.3s ease-out';
+            sliderThumb.style.left = '0px';
+            sliderTrack.style.width = '0%';
+          }
+        }
+      });
+      
+      sliderThumb.addEventListener('touchstart', function(e) {
+        isDragging = true;
+        startX = e.touches[0].clientX - sliderThumb.getBoundingClientRect().left;
+        sliderThumb.style.transition = 'none';
+        sliderTrack.style.transition = 'none';
+        e.preventDefault();
+      });
+      
+      document.addEventListener('touchmove', function(e) {
+        if (!isDragging) return;
+        updateSliderPosition(e.touches[0].clientX - startX);
+      });
+      
+      document.addEventListener('touchend', function() {
+        if (isDragging) {
+          isDragging = false;
+          
+          const currentLeft = parseFloat(sliderThumb.style.left || '0');
+          if (currentLeft < maxRight * 0.9) {
+            sliderThumb.style.transition = 'left 0.3s ease-out';
+            sliderTrack.style.transition = 'width 0.3s ease-out';
+            sliderThumb.style.left = '0px';
+            sliderTrack.style.width = '0%';
+          }
+        }
+      });
+      
+      backButton.addEventListener('click', function() {
+        successPage.style.display = 'none';
+        sliderThumb.style.left = '0px';
+        sliderTrack.style.width = '0%';
+      });
+      
+      updateProgress();
+    });
+  </script>
+</body>
+</html>
